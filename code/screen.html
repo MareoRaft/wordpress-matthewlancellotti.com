@@ -1,0 +1,174 @@
+<a href="https://github.com/MareoRaft/screen"><strong>Screen</strong></a> is a web portal to the terminal!  More importantly, it is a collaboration tool that allows users to share a terminal session online.
+
+<!--more-->Screen is not a complete project.  There are issues with piping information back and forth to a terminal, especially in interactive CLI’s.  But this was still a great learning experience.
+
+You can view the full code on <a href="https://github.com/MareoRaft/screen">GitHub</a>.  The below preview is the <strong>room.pm</strong> module.  It creates room objects for users to collaborate in.  It also creates a shell for each room and executes the terminal commands.
+<pre class="lang:perl ">package room;
+
+use strict; use warnings;
+use feature 'switch';
+use helpers;
+use set;
+use shell;
+
+######################################### GLOBALS ########################################
+our %nametoroom = ();
+
+#################################### HELPER FUNCTIONS ####################################
+our @namepool = ();
+open( my $FH, '&lt;', 'public/lexis.txt' ) or die 'Could not open the lexis!!!'; push @namepool =&gt; trim(lc $_) while( &lt;$FH&gt; ); # rooms are stored as lowercase, so the keys must be lc too!
+close( $FH ) or die 'Could not CLOSE the lexis!';
+
+sub rand_name{
+    my $randindex = int( $#namepool * rand() );
+    return $namepool[$randindex]
+}
+
+sub name_to_room{ # creates a new room if necessary
+    my ($name) = @_;
+    return $nametoroom{$name} //= room-&gt;new(name=&gt;$name) or die 'Bad room name string!' # adds the room to our hash if necessary
+}
+
+sub htmlify{ # this takes any amount of terminal stdout and converts it to html.
+	my ( $str, $prompt ) = @_;
+	# put a span around the commands...
+	# $prompt = quotemeta $prompt;
+	# $str =~ s|^(.*)\n|<span class="command">$1</span>\n|; # the very first command is NOT preceded by a prompt.
+	# $str =~ s|\n?$prompt(.*)\n|\n<span class="command">$1</span>\n|g; # this also makes sure that prompts always start on new lines.
+	# $str =~ s|\n?$prompt$|\n|; # delete final prompt.  Also, all endings have newlines regardless of what bash outputted.
+	# $str =~ s|\n$|\n\n|g; # for an outputless command, let's display an empty line to show that.
+	$str =~ s|\n|
+|g;
+	return $str
+}
+
+######################################## NEW ROOM ########################################
+sub new{
+	my $packagename = shift;
+	my %options = @_; # includes the NAME of the room.
+
+	my $room = bless {
+		name =&gt; $options{name},
+		shell =&gt; undef,
+		controllers =&gt; set-&gt;new,
+		output =&gt; '',
+	}
+	=&gt; $packagename;
+
+	$room-&gt;shell('sh');
+
+	return $room
+}
+
+########################################## ROOM ##########################################
+sub name{
+	my $room = shift;
+	return $$room{name}
+}
+
+sub shell{
+	my $room = shift;
+	my ($shellname) = @_;
+	if( defined $shellname ){
+		$room-&gt;shell-&gt;close if defined $room-&gt;shell;
+		$$room{shell} = shell-&gt;new( $shellname, $room );
+		my $divider = "\n###############################################################\n";
+		$room-&gt;append($divider."Welcome to a new $shellname shell!\n\n");
+	}
+	return $$room{shell}
+}
+
+sub controllers{ # this is a SET of controllers
+	my $room = shift;
+	return $$room{controllers}
+}
+sub add_controller{
+	my $room = shift;
+	my ($controller) = @_;
+	$room-&gt;controllers-&gt;add_element($controller)
+}
+sub remove_controller{ say 'removing a controller...';
+	my $room = shift;
+	my ($controller) = @_;
+	$room-&gt;controllers-&gt;remove_element($controller);
+	# check if the room is empty.  if so, close the room.
+	if( $room-&gt;controllers-&gt;is_empty ){ say 'closing the room...'; $room-&gt;close }
+}
+
+sub output{ # gets all the output of a room for a new self joining in
+	my $room = shift;
+	return $$room{output}
+}
+
+sub append_to_output{
+	my $room = shift;
+	my ($string) = @_;
+	$$room{output} .= $string;
+}
+
+sub append{
+	my $room = shift;
+	my ($string) = @_;
+	$room-&gt;append_to_output($string);
+#	my $html = htmlify( $string, $room-&gt;shell-&gt;prompt );
+	my $html = htmlify( $string );
+	$room-&gt;jblast( command=&gt;'append', output=&gt;$html );
+	#say "output is now $$room{output}";
+}
+
+sub jblast{ # blast is replaced with jblast, which includes the json in it
+	my $room = shift;
+	#say 'jblasting to '.scalar $room-&gt;controllers-&gt;array.' controllers.';
+	my %ball = @_; say 'ball is '."@_";
+	foreach( $room-&gt;controllers-&gt;array ){ #say 'i have a controller '."$_";
+		$_-&gt;jsend(%ball)
+	}
+	#say 'done WITH CONTROLLERS';
+}
+
+use overload
+	'""' =&gt; \&amp;stringify;
+
+sub stringify{
+	my $room = shift;
+	my $toprint;
+	{
+	local $" = ',';
+		$toprint .= 'Roomname is '.$room-&gt;name."\n";
+		my @controllers = $room-&gt;controllers-&gt;array; $toprint .= "Controllers are: @controllers\n";
+	}
+	return $toprint
+}
+
+sub command{ # executes a shell command and relays the output to all controllers.
+	my $room = shift;
+	my ($command) = @_; # incoming command does not have a \n at the end.
+	say "command is $command"; #say "Bin is $Bin";
+	if( $command =~ /^(shell) +([^ ]*)/i ){ # capture special room commands: shells
+		my $keyword = $1;
+        my $argument = lc trim $2;
+        given($keyword){
+	        when('shell'){ # the argument has already been verified in $self-&gt;command
+	            $room-&gt;shell($argument);
+	            $room-&gt;jblast( command=&gt;'set', id=&gt;'shellname', html=&gt;$argument, color=&gt;"#f12772" );
+	        }
+	    }
+    }
+    else{
+#    	my $outappend = $room-&gt;shell-&gt;command($command);
+    	my $outappend = "<span class="command">$command</span>
+" . $room-&gt;shell-&gt;command($command);
+		$room-&gt;append($outappend);
+	}
+}
+
+sub close{
+	my $room = shift;
+	$room-&gt;shell-&gt;close;
+	# tell each controller in the room to leave the room (reset roomname attribute, remove self from room-&gt;controllers, update GUI
+	foreach my $self ( $room-&gt;controllers-&gt;array ){ $self-&gt;leave_room }
+	delete $nametoroom{ $room-&gt;name }; # delete the room from the nametoroom hash
+}
+
+1
+</pre>

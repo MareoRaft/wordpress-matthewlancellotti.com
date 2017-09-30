@@ -1,0 +1,54 @@
+<a href="http://learnnation.org/node.zip">node.pl</a> is a terminal based program which allows you to create graphs.  You enter nodes (vertices) and connections (edges), and then view your data as you please!
+
+Both directed and non directed graphs are supported.  Features include, saving to file, merging files, undo, redo, custom color schemes, etc.
+
+<!--more-->Click <a href="http://learnnation.org/node.zip">node.pl</a> to download!
+
+Preview:
+<pre class="lang:perl">
+################# ADVANCED FIND FEATURES #################
+
+sub nodeNames{
+  my @names;
+  foreach( @nodes ){ push(@names,$_->name) }
+  return @names
+}
+
+sub neighbors{ #i have decided to make neighbors(@set) disclude the elements of @set itself. Assumed good input of actual node names
+  my ($currentref) = @_;
+	my @neighbors;
+	foreach( @$currentref ){ @neighbors = union(\@neighbors,obj($_)->connectorsRef) }
+	return minus(\@neighbors,$currentref);
+}
+
+sub family{ #family is like neighbors, but it INCLUDES the input set.
+  my ($currentref) = @_;
+	my @neighbors = @_;
+	foreach( @$currentref ){ @neighbors = union(\@neighbors,obj($_)->connectorsRef) }
+	return union(\@neighbors,$currentref);
+}
+
+sub connectedGraph{ #print "input is ",@_," and family is ",family(@_)," and lengthleft is ",length(@_)," and lengthright is ",length(family(@_)),"\n";
+	my ($currentref) = @_;
+	if( intersect($currentref,[nodeNames])==() ){ warn "no such node names"; return 0 }
+	my @family = family($currentref);
+	if( $#$currentref == $#family ){ return $currentref }
+	return connectedGraph(\@family);
+}
+
+sub level{
+	my ($level,$node) = @_; my @current = ($node);
+	if( $level < 0 ){ return }
+	if( $level==0 ){ return @current }
+	while(1){
+	print "level is ",2-$level,"\n";
+	print "current is "; display \@current; print "\n";
+	print "neighbors of current is "; display([neighbors(@current)]); print "\n";
+	print "\n\n";
+		#everything gets promoted
+		if( $level==1 ){ return neighbors(@current) }
+		@current = family(@current);
+		--$level;
+	}
+}
+</pre>

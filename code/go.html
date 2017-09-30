@@ -1,0 +1,45 @@
+<a href="http://learnnation.org/go.gz">Go</a> is a terminal utility that allows you to go to directories far from your current directory.  One need only type the name of the directory, and go will search for it and take you there.
+
+<a href="http://learnnation.org/go.gz">Go</a> is meant to replace tedious use of `cd`.  <a href="http://learnnation.org/go.gz">Go</a> is similar to popular launchers like Alfred or Quicksilver, but it is for use in the terminal (tested in bash).
+
+<!--more-->To use <a href="http://learnnation.org/go.gz">go</a>, click <a href="http://learnnation.org/go.gz">go</a> to download, place it in <b>/your/personal/bin</b>, g-unzip it, and add the following line to your <b>~/.bash_profile</b>:
+<blockquote>source /your/personal/bin/go</blockquote>
+<a href="http://learnnation.org/go.gz">Go</a> uses the variable <b>$GOPATH</b> to determine where it will search for directories.  It will search those directories in the order they appear, just like your environment <b>$PATH</b> variable.  Open up the <a href="http://learnnation.org/go.gz">go</a> file in a text editor to change the <b>$GOPATH</b> to fit your computer.  You may also change the depth that <a href="http://learnnation.org/go.gz">go</a> searches.
+
+Here is the code in its entirety:
+<pre class="lang:bash "># state the desired paths that go will search in. The default depth to search in each path is 4, but this may be changed in find_go()
+# input each path on a separate line
+GOPATH="$HOME
+$HOME/Dropbox
+/"
+
+# given path and dir, run find. if nonempty, take the first entry, cd, pwd, exit
+find_go() {
+    DEPTH=4
+    SPATH="$1"
+    DIR="$2"; shift
+    until [ -z "$2" ] # concatenate args with a space
+    do
+        DIR="$DIR $2"; shift
+    done
+    FINDS=$(find "$SPATH" -maxdepth $DEPTH -name "$DIR" 2&gt;/dev/null)
+    IFS=$'\n' # interpolation necessary b/c '' will make \ and n field separators.
+    for FIND in $FINDS # although this is a loop, the goal is to take the first entry if there is one
+    do
+        # cd to first entry, pwd, exit
+        cd "$FIND"
+        pwd
+        IFS=$' \t\n'
+        return 0 # success! we found the match!
+    done
+    IFS=$' \t\n'
+    return 1 # failure. we didn't find it in this path.
+}
+
+go() {
+    for SPATH in $GOPATH # foreach path, go to the inputted directory if possible
+    do
+        find_go "$SPATH" $@ &amp;&amp; return # if we successfully went to the directory, exit the program
+    done
+}
+</pre>

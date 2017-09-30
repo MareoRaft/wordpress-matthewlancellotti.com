@@ -1,0 +1,16 @@
+<a href="http://learnnation.org/cloud_computing.html">Cloud Computing</a> simulates an environment where a student can write code subject to certain requirements.  In this example, the language is javascript, and the requirements are:
+
+<ul class="ul1">
+ 	<li class="li2">A <strong>For</strong> Statement containing a Variable Declaration.  For example, `for (i=0; i&lt;4; i++) { var x = 10 * i; doSomething(x) }`</li>
+ 	<li class="li2">An <strong>If</strong> Statement.  For example, `if (color === 'orange') {shout()}`</li>
+ 	<li class="li2">A <strong>While</strong> Statement.  For example, `while (y&gt;0) {y--}`</li>
+</ul>
+<!--more-->Not for Internet Explorer.
+
+The idea is that a teacher could assign a programming challenge to a student, and the student could get immediate validation as to whether or not they satisfy the requirements.  The requirements are fully customizable from the back-end.  The code editor will output compiling errors to the student also, which is useful for debugging.  The student need not set up a javascript environment themselves, and all students can work in the same environment.
+
+This project uses plain HTML5 with heavy CSS (SASS) for visual effects.  The syntax highlighting for the “day” theme is my own, while the syntax highlighting for the “evening” and “night” themes is the popular <a href="http://ethanschoonover.com/solarized">Solarized</a> theme.  The code editor comes from <a href="http://codemirror.net/">CodeMirror</a>.  The Esprima Parser is used to parse the javascript properly, and my own functions validate the student’s code.  I’m trying out a new javascript type checker called <a href="https://github.com/philbooth/check-types.js">check-types</a> that I like so far.  RequireJS bundles all the javascript together and optimizes it for the web.  I used the Python <a href="http://www.tornadoweb.org/en/stable/">Tornado Web Server</a> to host it on a FreeBSD virtual operating system.
+
+Thanks for taking a look at <a href="http://learnnation.org/cloud_computing.html">Cloud Computing</a>!
+
+You can also view the code repository <a href="https://github.com/MareoRaft/cloud-computing">here</a>.

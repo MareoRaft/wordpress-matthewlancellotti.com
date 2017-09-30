@@ -1,0 +1,24 @@
+Mac OSX 10.9 ships with the <strong>Dvorak</strong> keyboard, the <strong>Dvorak – Qwerty ⌘</strong> keyboard, and the <strong>Colemak</strong> keyboard, but there is no <strong>Colemak – Qwerty ⌘</strong> keyboard.  Here it is:
+
+<a href="http://learnnation.org/ColemakQwertyCmd.keylayout.zip">Colemak – Qwerty ⌘.keylayout</a>
+<a href="http://learnnation.org/ColemakQwertyCmd.icns.zip">Colemak – Qwerty ⌘.icns</a>
+
+<!--more-->
+
+You will have to unzip them and make sure their names are as above.
+
+To install for your user account only, move both files into `~/Library/Keyboard Layouts/`.  To install for all users on your mac, move both files into `/Library/Keyboard Layouts/`.
+
+To view/use installed keyboards on your mac, go to <strong>System Preferences &gt; Keyboard &gt; Input Sources</strong>, then click the + symbol on the bottom left. Choose the <strong>Others</strong> category on the left sidebar to see any manually added keyboards.
+
+&nbsp;
+
+I created this using the <a href="http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&amp;id=ukelele">Ukelele</a> application.  If you want to create your own custom keyboards, follow these directions:
+
+On the Ukelele disk image, open the file `/System Keyboards/Dvorak/DVORAK-QWERTYCMD.keylayout`, which is already set up with the ⌘ key separated from the regular keys (this was a good choice for my goal).
+
+Keep <strong>View &gt; Sticky Modifiers</strong> checked, because it enables the ability to edit ⌘ and <strong>shift</strong> inputs when necessary.  Use <strong>Keyboard &gt; Edit Key…</strong> to change key outputs to <a href="https://colemak.com">Colemak</a> outputs.  Sometimes changing a key will also change that same letter elsewhere on the keyboard (often when ⌘ is selected).  When this occurs, use <strong>Keyboard &gt; Unlink Key…</strong> to disconnect the offending key.  Repeat this process until all keys are changed.  Easier said than done.
+
+To create an icon for your custom keyboard, follow these directions:
+
+Use <strong>Icon Composer.app</strong> from the <a href="https://developer.apple.com/downloads/index.action">Apple Developer Website</a> under <strong>Graphics Tools for Xcode – Late August 2014</strong> (download the entire .dmg file).  That application allows you to bundle up images into a .icns file.  Do <em>not</em> use Preview to save .icns files, since it does not handle them properly.
