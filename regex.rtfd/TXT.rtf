@@ -1,0 +1,151 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fnil\fcharset0 Georgia;\f1\fnil\fcharset0 HelveticaNeue;\f2\fnil\fcharset0 LucidaGrande;
+\f3\fswiss\fcharset0 Helvetica;\f4\fnil\fcharset0 Monaco;\f5\fmodern\fcharset0 Courier;
+}
+{\colortbl;\red255\green255\blue255;\red35\green52\blue65;\red255\green255\blue255;\red117\green149\blue174;
+\red14\green115\blue176;\red240\green244\blue246;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{none\}}{\leveltext\leveltemplateid1\'00;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
+\margl1440\margr1440\vieww14200\viewh16520\viewkind0
+\deftab720
+\pard\pardeftab720\sl920
+{\field{\*\fldinst{HYPERLINK "http://code.instructorium.com/regex/"}}{\fldrslt 
+\f0\b\fs72 \cf2 \cb3 Regex}}
+\f0\b\fs72 \cf2 \cb3 \
+\pard\pardeftab720\sl480
+{\field{\*\fldinst{HYPERLINK "http://code.instructorium.com/regex/"}}{\fldrslt 
+\f1\b0\fs30 \cf4 Oct 5, 2014}}
+\f1\b0\fs30 \
+\pard\tx220\tx720\pardeftab720\li720\fi-720
+\ls1\ilvl0\cf4 		{\field{\*\fldinst{HYPERLINK "https://wordpress.com/tag/alfred"}}{\fldrslt Alfred}}{\field{\*\fldinst{HYPERLINK "https://wordpress.com/tag/perl"}}{\fldrslt perl}}{\field{\*\fldinst{HYPERLINK "https://wordpress.com/tag/regex"}}{\fldrslt RegEx}}\
+\pard\tx720\pardeftab720
+\cf4 \
+\
+\pard\pardeftab720\sl540\sa480
+{\field{\*\fldinst{HYPERLINK "http://code.instructorium.com/downloads/Regex.alfredworkflow"}}{\fldrslt 
+\f0\fs32 \cf5 Download Regex!}}
+\f0\fs32 \cf2 \
+My {\field{\*\fldinst{HYPERLINK "http://www.alfredapp.com/"}}{\fldrslt \cf5 Alfred}} workflow has been released! It puts all the power of {\field{\*\fldinst{HYPERLINK "http://www.regular-expressions.info/"}}{\fldrslt \cf5 regular expressions}} at your fingertips. Here are some usage examples\'85\
+\pard\pardeftab720\sl800\sa160
+
+\b\fs48 \cf2 Perform a Search and Replace on some Text:\
+\pard\pardeftab720\sl540\sa480
+
+\b0\fs32 \cf2 1. Copy your text (
+\f2 \uc0\u8984 
+\f0 C). Leave it highlighted.\
+2. Invoke Alfred and type your regex.\
+
+\f3\fs24 \cf0 
+\f0\fs32 <https://i1.wp.com/code.instructorium.com/wp-content/uploads/2014/10/regex1.png>\cf2 \
+3. Hit Enter.\
+Your highlighted text will be replaced with the regex result. This is because Alfred pastes the result into the frontmost application. If you wanted the result to appear BELOW the original text instead of replacing it, you would simply move the cursor to where you want the result before invoking Alfred. Similarly, if you wanted the result pasted into a different application, you would move focus to that application before invoking Alfred.\
+\pard\pardeftab720\sl800\sa160
+
+\b\fs48 \cf2 Perform a Quoted Search and Replace:\
+\pard\pardeftab720\sl540\sa480
+
+\b0\fs32 \cf2 This feature disables escape characters and interpolation altogether. This is convenient when all you need is a simple replacement. For example, if I wanted to replace all 
+\f4\fs30 \\tfrac
+\f0\fs32 in my LaTeX document with 
+\f4\fs30 \\dfrac
+\f0\fs32 , I could type\
+
+\f3\fs24 \cf0 
+\f0\fs32 <https://i0.wp.com/code.instructorium.com/wp-content/uploads/2014/10/regex2.png>\cf2 \
+\pard\pardeftab720\sl800\sa160
+
+\b\fs48 \cf2 Perform a Saved Regex on your Text:\
+\pard\pardeftab720\sl540\sa480
+
+\b0\fs32 \cf2 Type \'93regex\'94 followed by the name of your saved regex.\
+
+\f3\fs24 \cf0 
+\f0\fs32 <https://i1.wp.com/code.instructorium.com/wp-content/uploads/2014/10/regex3.png>\cf2 \
+\pard\pardeftab720\sl800\sa160
+
+\b\fs48 \cf2 Save a Regex that You Frequently Use:\
+\pard\pardeftab720\sl540\sa480
+
+\b0\fs32 \cf2 1. Type a regex into Alfred as you normally would.\
+2. Type \'94 save as \'94 at the end, followed by the name you would like to save it as.\
+
+\f3\fs24 \cf0 
+\f0\fs32 <https://i0.wp.com/code.instructorium.com/wp-content/uploads/2014/10/regex4.png>\cf2 \
+3. Select the \'93save regex as \'91yourname'\'94 option.\
+If the \'93save as\'94 option doesn\'92t appear, it means that there is a syntax error in your regex delimiters. Look over your regex carefully and find the error.\
+\pard\pardeftab720\sl800\sa160
+
+\b\fs48 \cf2 Save a Sequence of Regexs or Add Your Own Scripting:\
+\pard\pardeftab720\sl540\sa480
+
+\b0\fs32 \cf2 If you would like to save a sequence of regexs under one name, or add some scripting to your regexs, the file containing your saved regexs is available for full customization. Here\'92s how:\
+1. Open the file 
+\f4\fs30 ~/Library/Application\'a0Support/Alfred\'a02/workflows/com.verykiwi.regex/RegexSequences.pl
+\f0\fs32 . You MUST have saved at least one regex using the above method in order for this file to exist. There will be some other regexs in the file that I have created as an example to you.\
+2. Add an 
+\f4\fs30 elsif
+\f0\fs32  statement to the bottom. 
+\f4\fs30 $c
+\f0\fs32  is the name that you want to save your regex as. For example, if you want to use the name \'93myseq\'94 for your regex sequence, and if you wanted to perform both 
+\f4\fs30 s/this/that/gi
+\f0\fs32  and 
+\f4\fs30 s/that/THAT/xg
+\f0\fs32  on your text, you would add the code\
+\pard\pardeftab720\sl480
+
+\f5\fs30 \cf2 \cb6 elsif( $c =~ /^myseq$/ )\{\
+	$q =~ s/this/that/gi;\
+	$q =~ s/that/THAT/xg;\
+\}\
+\pard\pardeftab720\sl540\sa480
+
+\f0\fs32 \cf2 \cb3 If you want to add your own perl functions or other code to the file, do so at the TOP, not the bottom. Newly saved regexs are populated at the bottom.\
+\pard\pardeftab720\sl800\sa160
+
+\b\fs48 \cf2 Perform Translations (tr feature):\
+\pard\pardeftab720\sl540\sa480
+
+\b0\fs32 \cf2 You can now enter 
+\f4\fs30 tr
+\f0\fs32  commands, such as 
+\f4\fs30 tr/abc/123/
+\f0\fs32 . That command would replace all 
+\f4\fs30 a
+\f0\fs32 \'91s with 
+\f4\fs30 1
+\f0\fs32 \'91s, all 
+\f4\fs30 b
+\f0\fs32 \'91s with 
+\f4\fs30 2
+\f0\fs32 \'91s, and all 
+\f4\fs30 c
+\f0\fs32 \'91s with 
+\f4\fs30 3
+\f0\fs32 \'91s.\
+Perl also allows you to abbreviate 
+\f4\fs30 abcdefghijklmnopqrstuvwxyz
+\f0\fs32  with 
+\f4\fs30 a-z
+\f0\fs32 , for example, so a command to capitalize your text would be the following:\
+
+\f3\fs24 \cf0 
+\f0\fs32 <https://i2.wp.com/code.instructorium.com/wp-content/uploads/2014/10/regextr.png>\cf2 \
+\pard\pardeftab720\sl800\sa160
+
+\b\fs48 \cf2 \
+\pard\pardeftab720\sl540\sa480
+{\field{\*\fldinst{HYPERLINK "http://code.instructorium.com/downloads/Regex.alfredworkflow"}}{\fldrslt 
+\b0\fs32 \cf5 Download Regex!}}
+\b0\fs32 \
+\pard\pardeftab720\sl540\sa480
+{\field{\*\fldinst{HYPERLINK "http://code.instructorium.com/regexchangelog/"}}{\fldrslt \cf5 Changelog}}\
+\pard\pardeftab720\sl540
+
+\f3\fs24 \cf0 \cb1 {{\NeXTGraphic Pasted Graphic.tiff \width1600 \height300
+}¬}
+\f0\fs32 \cb3 \
+(image links to http://creativecommons.org/licenses/by/4.0/)\
+\pard\pardeftab720\sl540
+\cf2 \uc0\u8232 Regex by {\field{\*\fldinst{HYPERLINK "https://wordpress.com/read/blogs/63779170/posts/code.instructorium.com/regex"}}{\fldrslt \cf5 Matthew Lancellotti}} is licensed under a {\field{\*\fldinst{HYPERLINK "http://creativecommons.org/licenses/by/4.0/"}}{\fldrslt \cf5 Creative Commons Attribution 4.0 International License}}.\
+}

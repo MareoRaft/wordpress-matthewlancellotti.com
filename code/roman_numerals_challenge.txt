@@ -1,0 +1,89 @@
+Roman Numerals Challenge
+=========================
+
+tags:
+perl, RegEx, tty
+
+date:
+July 20, 2014
+
+content:
+Coding challenge requirements:
+------------------------------
+
+  1. Design a [regular expression](http://www.regular-expressions.info/) which matches VALID roman numerals only.
+  2. Create a program which converts [roman numerals](http://en.wikipedia.org/wiki/Roman_numerals) to arabic numbers (what we use today) and vice-versa.
+  3. The program should be [SCALABLE](http://en.wikipedia.org/wiki/Scalability), meaning that if I extend the roman numerals beyond M, you do not have to re-write your program.
+  4. Bonus: The program attempts to minimize the total number of lines.
+
+My solution:
+-------------
+
+  1. Designing a regular expression for roman numerals requires truly understanding how they work. Although some of the following roman numerals ( I, II, III, IV, V, VI, VII, VIII, IX ) have the I positioned BEFORE the larger V or X, you will never see a I occur before a larger figure. This leads us to realize that roman numerals are a base 10 number system that can be partitioned into their place values.
+
+linequote:
+MCDXXXII
+
+for example is just
+
+linequote:
+M CD XXX II
+
+in disguise.
+
+Therefore the regular expression can deal with each place one at a time.
+  2. To convert to roman numerals, we look at each digit and its place. The function `roman_one_place` assigns the proper roman numerals for that place. Values above 3 require a `$heavy`, a larger numeral (that is, IV, V, VI, VII, VIII, and IX all have something heavier than I in them). Values 4 and 9 specifically require that the I is BEFORE the `$heavy`. I determine what the heavy should be (line 13), and then put the I’s before or after the heavy using mod 5 and mod 4 operations as a detector (line 15. A friend suggested this implementation.). The code is extremely dense so I suggest reading through it slowly.
+  3. The program is written in full generality, using `$#ones` for the last index of the ONES array, `$ones[-1]` for the last element of the ONES array, and `$place` to grab the individual elements from the ONES and FIVES arrays. The result is that extending the roman numerals requires merely adding more elements to the ONES and FIVES arrays.
+  4. The `roman_one_place` is quite clever to deal with the `$heavy` in a brief but effective manner. To convert a roman numeral to arabic, we take advantage of the fact that order doesn’t matter unless a ONES element is immediately before a directly superior ONES of FIVES element. In that case, we must subtract its value. Otherwise, we add its value.
+Although the code should be short, of course it is good practice to comment the code, and some lines are added for terminal coloring and display.
+
+You can view the code below, or download it.
+
+CODE QUOTE:
+use strict; use warnings;
+use Term::ANSIColor qw(:DEFAULT :constants); # for display colors
+sub input{ print YELLOW; my $i = ; print RESET; $i =~ s/^\s+|\s+$//g; return $i }
+
+my @ones = qw(I X C M);
+my @fives = qw(V L D); # the FIVES array must always be exactly 1 shorter in length than the ONES array
+
+sub roman_one_place{
+	my ($place,$n) = @_; #place 0 is the 1st digit, place 1 is the 2nd digit, etc
+	# M is the highest place, so at that point we cannot use a heavy, but must repeat M over and over until we get the amount.
+	if( $place>=$#ones ){ return $ones[-1] x ($n*10**($place-$#ones)) }
+	# if n > 3, we will need an additional FIVES numeral. if n > 8, we will need an additional ONES numeral:
+	my $heavy = ( '', $fives[$place], $ones[$place+1] )[ ($n > 3) + ($n > 8) ];
+	# n % 5 is the remainder past 5.  When we divide by 4, we automatically get the FLOOR of the function
+	return $ones[$place] x (($n % 5) / 4) . $heavy . $ones[$place] x (($n % 5) % 4);
+}
+
+my $placeroman = ''; for( my $j=$#fives; $j>=0; --$j ){
+	$placeroman .= qr/${ones[$j]}[${fives[$j]}${ones[$j+1]}]|${fives[$j]}?${ones[$j]}{0,3}/i #(?^i:regex) ignores case for the enclosed regex
+}
+
+sub roman{
+	my ($i) = @_;
+	if( $i =~ /^\d+$/ && $i!=0 ){ #print "convert to roman";
+		my @i = split('',$i);
+		my $roman = '';
+			for( my $place=0; @i; ++$place ){ $roman = roman_one_place( $place, pop @i ) . $roman }
+		return $roman
+	}
+	if( $i =~ /^(?!$)${ones[-1]}*$placeroman$/io ){ #print "convert to arabic";
+		# we will be adding up the value of each numeral, regardless of order
+		my $sum = 0;
+			# when a ONES numeral comes BEFORE the next biggest FIVES or ONES numberal, we subtract instead of adding
+			for( my $p=0; $p<=$#ones-1; ++$p ){ $sum -= ($i=~s/$ones[$p]($fives[$p]|$ones[$p+1])/$1/gi)*1*10**$p } # delete it too, since we don't need it anymore
+			for( my $p=0; $p<=$#ones; ++$p ){ $sum += ($i=~s/$ones[$p]//gi)*1*10**$p }
+			for( my $p=0; $p<=$#fives; ++$p ){ $sum += ($i=~s/$fives[$p]//gi)*5*10**$p }
+		return $sum;
+	}
+	return "The Romans did not consider that to be a number."
+}
+
+while(1){
+	print "\n"; my $i = input();
+	if( $i =~ /^q/ ){ exit 0 }
+	print roman($i),"\n";
+}
+
