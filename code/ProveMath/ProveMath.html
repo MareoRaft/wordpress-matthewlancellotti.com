@@ -18,7 +18,9 @@ Users can login so that their progress and preferences are saved for future visi
 
 <img src="http://matthewlancellotti.com/wp-content/uploads/2017/10/login.png" alt="" width="1440" height="874" class="alignnone size-full wp-image-115" />
 
-(technical details: Oauth login is used because it is more secure than savings passwords on my server.  User progress and preferences are linked to their oauth account number and stored on MongoDB on my server.  Users who click the "X" are given a brand new account that is not linked to any Oauth provider.  Such accounts can never be logged into again, and are deleted at a later date.  This solution has proven to be simpler than treating non-logged in users differently than logged in users, which causes complications in the code and inconsistency in user experiences.)
+
+
+<blockquote class="tech-detail">technical details: Oauth login is used because it is more secure than savings passwords on my server.  User progress and preferences are linked to their oauth account number and stored on MongoDB on my server.  Users who click the "X" are given a brand new account that is not linked to any Oauth provider.  Such accounts can never be logged into again, and are deleted at a later date.  This solution has proven to be simpler than treating non-logged in users differently than logged in users, which causes complications in the code and inconsistency in user experiences.</blockquote>
 
 <h2>Preferences</h2>
 
@@ -50,7 +52,7 @@ Users select a subject that they want to begin learning.  Starting nodes for tha
 
 <img src="http://matthewlancellotti.com/wp-content/uploads/2017/10/choose-a-subject-3.png" alt="" width="1440" height="874" class="alignnone size-full wp-image-108" />
 
-(technical details: A server-level config file contains a dictionary of math "subjects" (as humans classify them) for which their exists content in the database.  Math content is NOT partitioned or organized into subjects.  All the math material comes from the DB and populates a directed acyclic graph.  It is just one big graph.  However, if a user says they want to learn "abstract algebra ii", then I know that this "subject" begins with understanding what a "module" is.  Therefore, this is the starting node sent to the user.)
+<blockquote class="tech-detail">technical details: A server-level config file contains a dictionary of math "subjects" (as humans classify them) for which their exists content in the database.  Math content is NOT partitioned or organized into subjects.  All the math material comes from the DB and populates a directed acyclic graph.  It is just one big graph.  However, if a user says they want to learn "abstract algebra ii", then I know that this "subject" begins with understanding what a "module" is.  Therefore, this is the starting node sent to the user.</blockquote>
 
 <h2>Content display</h2>
 
@@ -58,7 +60,7 @@ The user clicks on the node and sees the actual math content.  The user reads th
 
 <img src="http://matthewlancellotti.com/wp-content/uploads/2017/10/content-display.png" alt="" width="1440" height="874" class="alignnone size-full wp-image-109" />
 
-technical details: The node is an object in Javascript, and it is passed to a GUI object called "Blinds" which displays the object as a bunch of rows.  The content is written in markdown with MathJax drop-ins, so it is run through a JS markdown implementation and displayed as HTML, and then MathJax runs on the displayed result (unfortunately, MathJax does not yet support being run BEFORE the content is rendered in the DOM, but that support is planned and arriving soon)
+<blockquote class="tech-detail">technical details: The node is an object in Javascript, and it is passed to a GUI object called "Blinds" which displays the object as a bunch of rows.  The content is written in markdown with MathJax drop-ins, so it is run through a JS markdown implementation and displayed as HTML, and then MathJax runs on the displayed result (unfortunately, MathJax does not yet support being run BEFORE the content is rendered in the DOM, but that support is planned and arriving soon)</blockquote>
 
 <h2>Continuous content improvement</h2>
 
@@ -66,7 +68,7 @@ If the user sees a typo (or if the user is an author who is actually WRITING the
 
 <img src="http://matthewlancellotti.com/wp-content/uploads/2017/10/continuous-content-improvement.png" alt="" width="1440" height="874" class="alignnone size-full wp-image-110" />
 
-(technical details: The original content (before being processed into HTML) is displayed to the user and editable via "contenteditable" in HTML.  Upon clicking "save", the proposed changes are sent to the server and run against error checks and scoring criteria, resulting in a ScoreCard object.  Errors cause the ScoreCard to have a failing grade.  Other criteria have smaller impacts on the grade and basically suggect changes to the user.  If the ScoreCard is a passing grade, the content is accepted into the DB, replacing the old content.  The ScoreCard is sent back to the user and the content is updated on the screen.)
+<blockquote class="tech-detail">technical details: The original content (before being processed into HTML) is displayed to the user and editable via "contenteditable" in HTML.  Upon clicking "save", the proposed changes are sent to the server and run against error checks and scoring criteria, resulting in a ScoreCard object.  Errors cause the ScoreCard to have a failing grade.  Other criteria have smaller impacts on the grade and basically suggect changes to the user.  If the ScoreCard is a passing grade, the content is accepted into the DB, replacing the old content.  The ScoreCard is sent back to the user and the content is updated on the screen.</blockquote>
 
 <h2>Directed learning</h2>
 
@@ -82,15 +84,15 @@ Let's pretend the user goes ahead and learns what a "submodule" is, and then wha
 
 Unlike a regular textbook, users are not forced to follow a specific path of learning.  But they are still encouraged to learn in a logical order (more than one path of learning is logically valid, and the user can choose within this structure)
 
-tech detail: The builtin capabilities of NewtworkX (a Python library which exposes a robust DirectedGraph object) have been extended to include a DAG (DirectedAcyclicGraph) object and many graph algorithms for that object that are specific to our needs.  Whenever the user learns, their progress is sent to the server, and algorithms are run against the global DAG object.  This results in new material being sent back to the user.
+<blockquote class="tech-detail">technical details: The builtin capabilities of NewtworkX (a Python library which exposes a robust DirectedGraph object) have been extended to include a DAG (DirectedAcyclicGraph) object and many graph algorithms for that object that are specific to our needs.  Whenever the user learns, their progress is sent to the server, and algorithms are run against the global DAG object.  This results in new material being sent back to the user.</blockquote>
 
 <h2>Graph animation</h2>
 
 The user takes a look at their options, and possibly moves the graph around / rearranges nodes.
 
-<a href="http://matthewlancellotti.com/wp-content/uploads/2017/10/graph-animation.mov">graph-animation</a>
+<a href="http://matthewlancellotti.com/wp-content/uploads/2017/10/graph-animation.mov" target="top">graph-animation</a>
 
-tech detail: Data is fed into D3js (Data Driven Documents) using a force-directed-graph visualization.  The pieces built for display are SVG, so there is no pixelation.  The graph animation has been tweaked and D3 has been patched to dampen node excitement, as to not be too distracting for the user :)
+<blockquote class="tech-detail">technical details: Data is fed into D3js (Data Driven Documents) using a force-directed-graph visualization.  The pieces built for display are SVG, so there is no pixelation.  The graph animation has been tweaked and D3 has been patched to dampen node excitement, as to not be too distracting for the user :)</blockquote>
 
 <h2>Search</h2>
 
@@ -98,7 +100,7 @@ The user continues learning in this fashion.  Consider that the user wants to lo
 
 <img src="http://matthewlancellotti.com/wp-content/uploads/2017/10/search.png" alt="" width="1440" height="874" class="alignnone size-full wp-image-119" />
 
-tech details: MongoDB supports a text index for searching purposes.  Each node is a single JSON dictionary in the DB.  We enable a text index which gives a different weight to each key in the node dictionary (the "name" key of the node gets a much higher weight than, say, the "dependencies" key).  Therefore, ALL content of a node is searched, but more weight is given to the node name and node description than other content in the node.  The top 15 results are processed into actual Node objects and sent back to the client.
+<blockquote class="tech-detail">technical details: MongoDB supports a text index for searching purposes.  Each node is a single JSON dictionary in the DB.  We enable a text index which gives a different weight to each key in the node dictionary (the "name" key of the node gets a much higher weight than, say, the "dependencies" key).  Therefore, ALL content of a node is searched, but more weight is given to the node name and node description than other content in the node.  The top 15 results are processed into actual Node objects and sent back to the client.</blockquote>
 
 <h2>Goals and depth-first learning</h2>
 
@@ -106,7 +108,7 @@ What if there is a specific theorem the user wants to learn?  The user can set t
 
 <img src="http://matthewlancellotti.com/wp-content/uploads/2017/10/goal.png" alt="" width="1440" height="874" class="alignnone size-full wp-image-113" />
 
-tech details: This is one of the most important algorithms in ProveMath.  Certain nodes in the DAG are "axioms", which you can think of as the "sources" of the DAG (although technically there is a distinction between these two).  A node's distance from the set of axioms determines its "depth".  This gives us a way to measure how deep math concepts are, with newer theorems usually being "deeper" than older ones.  But we also want users to have a say in which theorems the computer will suggest to the learned.  Therefore, nodes are weighted with "importances" that users can vote on.  These weights are factored in to the calculation.
+<blockquote class="tech-detail">technical details: This is one of the most important algorithms in ProveMath.  Certain nodes in the DAG are "axioms", which you can think of as the "sources" of the DAG (although technically there is a distinction between these two).  A node's distance from the set of axioms determines its "depth".  This gives us a way to measure how deep math concepts are, with newer theorems usually being "deeper" than older ones.  But we also want users to have a say in which theorems the computer will suggest to the learned.  Therefore, nodes are weighted with "importances" that users can vote on.  These weights are factored in to the calculation.</blockquote>
 
 <h2>Bridging learning</h2>
 
@@ -132,9 +134,11 @@ Users can view a printable version of any node, so that they can print it out on
 
 When viewing a node, the user can click on a "share" button which copies a URL to their clipboard.  They can send this link to a friend if they want their friend to navigate directly to that node.
 
-tech details: The main website does not consist of separate "pages" because it increases load time.  Instead, the website is updated as information evolves.  Therefore, this URL must specify the specific node in a query string.  When somebody visits the URL, the server processes the query string and sends directions to the client to load that particular node.
+<blockquote class="tech-detail">technical details: The main website does not consist of separate "pages" because it increases load time.  Instead, the website is updated as information evolves.  Therefore, this URL must specify the specific node in a query string.  When somebody visits the URL, the server processes the query string and sends directions to the client to load that particular node.</blockquote>
 
-Other notable tech details:
+Other notable technical details:
+
+<blockquote class="tech-detail">
 <ul>
     <li>gulp is used to run/kickoff build processes, especially on the JS side
     <li>JS is written in EMCAScript 6 and transpiled into EMCAScript 5 by babel
@@ -143,3 +147,4 @@ Other notable tech details:
     <li>We are using Sphinx for documentation, which can be accessed at <a href="http://provemath.org/docs">provemath.org/docs</a>
     <li>Server side in Python3
 </ul>
+</blockquote>

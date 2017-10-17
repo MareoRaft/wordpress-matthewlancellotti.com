@@ -1,0 +1,22 @@
+/*
+You can add your own CSS here.
+
+Click the help icon above to learn more.
+*/
+
+/* remove dates on posts*/
+.entry-header .entry-meta {
+    visibility: hidden;
+	height: 10px;
+}
+
+/* add more space between paragraphs */
+p {
+	margin-bottom: 28px;
+}
+
+/* create custom style for technical detail snippets.  This class is meant to be used on BLOCKQUOTE tags */
+.tech-detail {
+	color: grey;
+	font-size: 0.9em;
+}
