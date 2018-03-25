@@ -1,14 +1,17 @@
-The original Regex website was sadly lost in the GoDaddy purge of 2016.  A much abbreviated version is below:
+The original Regex website was tragically lost in the GoDaddy purge of 2016.  An abbreviated version is below:
 
-The Regex program allows you to use perl-style extended regular expressions anywhere on your computer.  Here are some examples of usage...
+The Regex program allows you to use <strong>perl-style</strong> extended <strong>regular expressions</strong> anywhere on your computer.  Here are some examples of usage...
 
-<!--more-->You can find capitalized occurrences of a particular word and make them lowercase:
+
+<!--more-->You can fix all occurrences of a certain misspelling, preserving the capitalization of the first letter (this example uses the regex "ignorecase" option, <code>i</code>, and the "global" option, <code>g</code>):
 
 <img src="http://matthewlancellotti.com/wp-content/uploads/2018/03/regex1-750x279-1.png" alt="" width="750" height="279" class="alignnone size-full wp-image-156" />
 
-You can substitute with the "quoted" option (using "sq" instead of "s") so that no special characters need to be escaped (useful for simple find-and-replace operations that don't need special regex features):
+You can substitute with the "quoted" feature (note the <code>sq</code> instead of <code>s</code> at the beginning), so that no special characters need to be escaped (useful for simple find-and-replace operations that don't need special regex features):
 
 <img src="http://matthewlancellotti.com/wp-content/uploads/2018/03/regex2-750x271-1.png" alt="" width="750" height="271" class="alignnone size-full wp-image-157" />
+
+Note: For the "quoted" feature, the regex delimiters may not be escaped either, so you MUST pick a unique character for them (e.g. <code>s@\qquad 2/3@\quad 2/3@</code> ), or in the case of brackets, have proper nesting.  The <code>e</code>, <code>x</code>, and <code>s</code> regex options are not available, but the <code>i</code> option is still available!
 
 You can save regular expressions under a keyword...
 
